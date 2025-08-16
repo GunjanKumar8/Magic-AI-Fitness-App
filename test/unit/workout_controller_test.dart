@@ -13,8 +13,12 @@ void main() {
   setUp(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
     await setUpTestHive();
-    Hive.registerAdapter(WorkoutAdapter());
-    Hive.registerAdapter(WorkoutSetAdapter());
+
+    if (!Hive.isAdapterRegistered(0)) {
+      Hive.registerAdapter(WorkoutAdapter());
+      Hive.registerAdapter(WorkoutSetAdapter());
+    }
+
     box = await Hive.openBox<Workout>('workouts');
     controller = WorkoutController(box: box)..onInit();
   });
